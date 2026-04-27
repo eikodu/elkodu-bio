@@ -4,7 +4,7 @@ const bioData = [
         name: 'Elko',
         username: 'Elko',
         url: 'https://elkodu.org',
-        titleImg: true,
+        titleImg: false,
         avatar: '/avatar.png',
         nftAvatar: true,
         description: 'Hello. ',
@@ -12,10 +12,10 @@ const bioData = [
         subdesc: 'Welcome',
         subdescShow: true,
         newProductUrl: 'https://3dicons.co',
-        newProduct: true,
+        newProduct: false,
         author: 'Elko',
-        authorURL: 'https://twitter.com/realvjy',
-        footerText: 'made by elko'
+        authorURL: 'https://twitter.com/elkodu',
+        footerText: 'made by'
     },
 ];
 
