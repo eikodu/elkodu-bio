@@ -1,20 +1,10 @@
 import styled, { keyframes, css } from 'styled-components'
 import { useState, useRef } from 'react'
 
-// 1. Animasiyanın tə tərifi
 const pulse = keyframes`
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-  }
-  70% {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-  }
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); transform: scale(1); }
+  70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); transform: scale(1.05); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); transform: scale(1); }
 `;
 
 export default function Layout({ children }) {
@@ -25,7 +15,7 @@ export default function Layout({ children }) {
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      audioRef.current.play();
+      audioRef.current.play().catch(err => console.log("Music play failed:", err));
     }
     setIsPlaying(!isPlaying);
   };
@@ -40,12 +30,12 @@ export default function Layout({ children }) {
         <source src="/music.mp3" type="audio/mpeg" />
       </audio>
 
-      {/* active={isPlaying} əlavə olundu ki, animasiya yalnız mahnı oxuyanda işləsin */}
-      <MusicControl onClick={toggleMusic} active={isPlaying}>
+      {/* className istifadə edərək animasiyanı tetikləyirik */}
+      <MusicControl onClick={toggleMusic} className={isPlaying ? 'active' : ''}>
         {isPlaying ? (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
         ) : (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
         )}
       </MusicControl>
 
@@ -67,31 +57,40 @@ const ContentWrapper = styled.div`
 
 const MusicControl = styled.button`
   position: fixed;
-  bottom: 25px;
-  right: 25px;
-  z-index: 10;
-  width: 50px;
-  height: 50px;
+  bottom: 30px;
+  right: 30px;
+  z-index: 99;
+  width: 55px;
+  height: 55px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 
-  /* Animasiya bura tətbiq olunur */
-  ${props => props.active && css`
+  /* Mahnı oxuyanda tətbiq olunan stillər */
+  &.active {
     animation: ${pulse} 2s infinite;
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-  `}
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  }
 
   &:hover {
-    transform: scale(1.1);
     background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+
+  svg {
+    transition: transform 0.2s ease;
+  }
+  
+  &:active svg {
+    transform: scale(0.9);
   }
 `;
