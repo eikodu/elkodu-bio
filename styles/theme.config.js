@@ -1,6 +1,5 @@
 import GlobalStyle from "./GlobalStyle"
 
-GlobalStyle
 const light = {
     bg: {
         primary: `var(--white)`,
@@ -22,7 +21,11 @@ const light = {
     img: {
         filter: 'invert(0)'
     },
-
+    accent: {
+        name: 'linear-gradient(90deg, #00C6FF 0%, #0072FF 100%)', // Mavi gradient
+        glitchPrimary: '#00C6FF',
+        glitchSecondary: '#0072FF',
+    }
 }
 
 const dark = {
@@ -46,7 +49,11 @@ const dark = {
     img: {
         filter: 'invert(1)'
     },
-    // ...
+    accent: {
+        name: 'linear-gradient(90deg, #FF0080 0%, #7928CA 100%)', // Neon gradient
+        glitchPrimary: '#FF0080',
+        glitchSecondary: '#7928CA',
+    }
 }
 
 const defaultTheme = {
@@ -79,8 +86,7 @@ const defaultTheme = {
         laptop: '1024px',
         laptopL: '1440px',
         desktop: '2560px'
-    },
-    // ...
+    }
 }
 
 export const lightTheme = { ...defaultTheme, ...light }
