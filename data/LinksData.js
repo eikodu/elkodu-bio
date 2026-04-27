@@ -17,7 +17,7 @@ const webLinks = [
     },
     {
         title: 'TikTok',
-        url: 'https://tiktok.com/elkodu__', // Bura öz TikTok linkini yaz
+        url: 'https://tiktok.com/@elkodu__', // Bura öz TikTok linkini yaz
         type: 'social',
         icon: '/tiktok.svg',
         on: true
