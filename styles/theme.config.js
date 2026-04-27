@@ -1,93 +1,67 @@
-import GlobalStyle from "./GlobalStyle"
+import styled from 'styled-components'
 
-const light = {
-    bg: {
-        primary: `var(--white)`,
-        secondary: `var(--light-black)`,
-        tertiary: 'rgba(0,0,0,0.03)',
-        border: "#EAEAEA",
-        inset: '#e2e4e8',
-        input: 'rgba(65,67,78,0.12)',
-        hover: 'linear-gradient(270deg, #FFF7FB 0%, #F4F8FF 100%);',
-    },
-    text: {
-        primary: `var(--black)`,
-        secondary: 'rgba(0,0,0,0.5)',
-        tertiary: '#646464',
-        quarternary: '#9194a1',
-        placeholder: 'rgba(82,85,96,0.5)',
-        onPrimary: '#ffffff',
-    },
-    img: {
-        filter: 'invert(0)'
-    },
-    accent: {
-        name: 'linear-gradient(90deg, #00C6FF 0%, #0072FF 100%)', // Mavi gradient
-        glitchPrimary: '#00C6FF',
-        glitchSecondary: '#0072FF',
-    }
+export default function ProfileSection({ avatar, mainName }) {
+  return (
+    <Container>
+      <Card>
+        {/* Profil Şəkli - İndi daha böyük və dairəvi */}
+        <ProfileImage src={avatar} alt="Profile" />
+        
+        {/* Rəngli Glitch Yazı */}
+        <ProfileName>{mainName}</ProfileName>
+        
+        {/* Altındakı lazımsız yazıları buradan sildik */}
+        <WelcomeText>Welcome</WelcomeText>
+
+        {/* Sosial Media İkonları və digər linklər bura gələcək */}
+      </Card>
+    </Container>
+  )
 }
 
-const dark = {
-    bg: {
-        primary: `var(--black)`,
-        secondary: `var(--light-white)`,
-        tertiary: 'rgba(255,255,255,0.03)',
-        border: "#EAEAEA",
-        inset: '#111111',
-        input: 'rgba(191,193,201,0.12)',
-        hover: 'linear-gradient(270deg, #131628 0%, #27141C 100%);',
-    },
-    text: {
-        primary: `var(--white20)`,
-        secondary: 'rgba(255,255,255,0.3)',
-        tertiary: '#a9abb6',
-        quarternary: '#6c6f7e',
-        placeholder: 'rgba(145,148,161,0.5)',
-        onPrimary: '#050505',
-    },
-    img: {
-        filter: 'invert(1)'
-    },
-    accent: {
-        name: 'linear-gradient(90deg, #FF0080 0%, #7928CA 100%)', // Neon gradient
-        glitchPrimary: '#FF0080',
-        glitchSecondary: '#7928CA',
-    }
-}
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+`;
 
-const defaultTheme = {
-    fontSizes: [
-        '14px', // 0
-        '16px', // 1
-        '18px', // 2
-        '22px', // 3
-        '26px', // 4
-        '32px', // 5
-        '40px', // 6
-    ],
-    fontWeights: {
-        body: 400,
-        subheading: 500,
-        link: 600,
-        bold: 700,
-        heading: 800,
-    },
-    lineHeights: {
-        body: 1.5,
-        heading: 1.3,
-        code: 1.6,
-    },
-    deviceSize: {
-        mobileS: '320px',
-        mobileM: '375px',
-        mobileL: '425px',
-        tablet: '768px',
-        laptop: '1024px',
-        laptopL: '1440px',
-        desktop: '2560px'
-    }
-}
+const Card = styled.div`
+  background: rgba(255, 255, 255, 0.05); /* Şüşə effekti */
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 400px; /* Kartın eni */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-export const lightTheme = { ...defaultTheme, ...light }
-export const darkTheme = { ...defaultTheme, ...dark }
+const ProfileImage = styled.img`
+  width: 130px; 
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid ${(props) => props.theme.bg.border};
+  margin-bottom: 20px;
+`;
+
+const ProfileName = styled.h1`
+  font-size: 32px;
+  font-weight: 800;
+  background: ${(props) => props.theme.accent.name};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glitch 1s linear infinite;
+  margin: 0;
+`;
+
+const WelcomeText = styled.p`
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  margin-top: 10px;
+`;
