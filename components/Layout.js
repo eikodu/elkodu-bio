@@ -16,39 +16,28 @@ export default function Layout({ children }) {
 
   return (
     <Main>
-      {/* Video Fonu */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          zIndex: 0,
-          filter: 'brightness(0.4)'
-        }}
-      >
+      <video autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, filter: 'brightness(0.4)' }}>
         <source src="/background.mp4" type="video/mp4" />
       </video>
 
-      {/* Musiqi Faylı */}
       <audio ref={audioRef} loop>
         <source src="/music.mp3" type="audio/mpeg" />
       </audio>
 
-      {/* Musiqi Düyməsi (Ekranın sağ aşağı küncü) */}
-      <MusicControl onClick={toggleMusic}>
-        {isPlaying ? 'PAUSE ⏸' : 'PLAY 🔊'}
+      {/* İkonlu Musiqi Düyməsi */}
+      <MusicControl onClick={toggleMusic} aria-label={isPlaying ? "Pause" : "Play"}>
+        {isPlaying ? (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+          </svg>
+        ) : (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        )}
       </MusicControl>
 
-      <ContentWrapper>
-        {children}
-      </ContentWrapper>
+      <ContentWrapper>{children}</ContentWrapper>
     </Main>
   )
 }
@@ -66,21 +55,28 @@ const ContentWrapper = styled.div`
 
 const MusicControl = styled.button`
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 25px;
+  right: 25px;
   z-index: 10;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 10px 20px;
-  border-radius: 50px;
+  border-radius: 50%;
   cursor: pointer;
-  font-family: sans-serif;
-  font-size: 12px;
-  letter-spacing: 1px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+
   &:hover {
     background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+
+  svg {
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
   }
 `;
