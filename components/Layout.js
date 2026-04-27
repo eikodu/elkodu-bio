@@ -3,16 +3,14 @@ import { useState, useRef, useEffect } from 'react'
 
 export default function Layout({ children }) {
   const [started, setStarted] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [offset, setOffset] = useState(0);
   const audioRef = useRef(null);
 
-  // Siçanın hərəkətini izləyirik
   useEffect(() => {
     const handleMouseMove = (e) => {
-      setMousePos({
-        x: (e.clientX / window.innerWidth - 0.5) * 30, // 30 sürüşmə dərəcəsidir
-        y: (e.clientY / window.innerHeight - 0.5) * 30
-      });
+      // Siçanın ekranın mərkəzinə görə vəziyyəti (-50 ilə 50 arası)
+      const xMove = (e.clientX / window.innerWidth - 0.5) * 100;
+      setOffset(xMove);
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
@@ -31,21 +29,23 @@ export default function Layout({ children }) {
         </Overlay>
       )}
 
-      {/* Video Fonu */}
       <video autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, filter: 'brightness(0.3)' }}>
         <source src="/background.mp4" type="video/mp4" />
       </video>
 
-      {/* İnteraktiv Qar Təbəqəsi */}
-      <SnowLayer style={{ transform: `translate(${-mousePos.x}px, ${-mousePos.y}px)` }}>
-        {[...Array(50)].map((_, i) => (
+      {/* Qar dənəcikləri - --xOffset dəyişəni ilə hərəkət edir */}
+      <SnowContainer style={{ '--xOffset': `${offset}px` }}>
+        {[...Array(60)].map((_, i) => (
           <SnowFlake key={i} style={{ 
             left: `${Math.random() * 100}%`, 
-            animationDuration: `${Math.random() * 3 + 2}s`,
-            animationDelay: `${Math.random() * 5}s`
+            animationDuration: `${Math.random() * 5 + 5}s`, // Daha yavaş yağma
+            animationDelay: `${Math.random() * 10}s`,
+            width: `${Math.random() * 3 + 1}px`,
+            height: `${Math.random() * 3 + 1}px`,
+            opacity: Math.random() * 0.5 + 0.3
           }} />
         ))}
-      </SnowLayer>
+      </SnowContainer>
 
       <audio ref={audioRef} loop>
         <source src="/music.mp3" type="audio/mpeg" />
@@ -65,30 +65,32 @@ const Main = styled.main`
   overflow: hidden;
 `;
 
-const SnowLayer = styled.div`
+const SnowContainer = styled.div`
   position: fixed;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 1;
-  transition: transform 0.2s ease-out;
 `;
 
 const SnowFlake = styled.div`
   position: absolute;
-  width: 4px;
-  height: 4px;
+  top: -10px;
   background: white;
   border-radius: 50%;
-  opacity: 0.8;
-  filter: blur(1px);
+  filter: blur(0.5px);
   animation: fall linear infinite;
 
   @keyframes fall {
-    0% { transform: translateY(-10vh); }
-    100% { transform: translateY(110vh); }
+    0% {
+      transform: translateY(-10vh) translateX(0);
+    }
+    100% {
+      /* var(--xOffset) vasitəsilə siçanın istiqamətinə meyl edir */
+      transform: translateY(110vh) translateX(var(--xOffset));
+    }
   }
 `;
 
