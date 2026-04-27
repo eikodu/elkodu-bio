@@ -5,7 +5,7 @@ const bioData = [
         username: 'Elko',
         url: 'https://elkodu.org',
         titleImg: false,
-        avatar: '/avatar.jpg',
+        avatar: '/Miku%20Nakano.jpg',
         nftAvatar: true,
         description: 'Hello. ',
         descShow: true,
