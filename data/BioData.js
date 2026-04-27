@@ -1,4 +1,3 @@
-// date: 1 Aug, 2022
 const bioData = [
     {
         name: 'Elko',
@@ -15,11 +14,9 @@ const bioData = [
         newProduct: false,
         author: 'Elko',
         authorURL: 'https://twitter.com/elkodu',
+        ogImage: '/og-image.jpg',
         footerText: 'made by'
     },
 ];
 
 export default bioData;
-
-
-
