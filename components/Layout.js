@@ -8,8 +8,9 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      // Siçanın ekranın mərkəzinə görə vəziyyəti (-50 ilə 50 arası)
-      const xMove = (e.clientX / window.innerWidth - 0.5) * 100;
+      // Siçanın mərkəzdən nə qədər uzaq olduğunu hesablayırıq
+      // Rəqəmi (150) artırsan, qar daha çox sağa-sola meyl edər
+      const xMove = (e.clientX / window.innerWidth - 0.5) * 150;
       setOffset(xMove);
     };
     window.addEventListener('mousemove', handleMouseMove);
@@ -33,16 +34,17 @@ export default function Layout({ children }) {
         <source src="/background.mp4" type="video/mp4" />
       </video>
 
-      {/* Qar dənəcikləri - --xOffset dəyişəni ilə hərəkət edir */}
-      <SnowContainer style={{ '--xOffset': `${offset}px` }}>
-        {[...Array(60)].map((_, i) => (
+      {/* Qar təbəqəsi */}
+      <SnowContainer style={{ '--moveX': `${offset}px` }}>
+        {[...Array(40)].map((_, i) => (
           <SnowFlake key={i} style={{ 
             left: `${Math.random() * 100}%`, 
-            animationDuration: `${Math.random() * 5 + 5}s`, // Daha yavaş yağma
-            animationDelay: `${Math.random() * 10}s`,
-            width: `${Math.random() * 3 + 1}px`,
-            height: `${Math.random() * 3 + 1}px`,
-            opacity: Math.random() * 0.5 + 0.3
+            animationDuration: `${Math.random() * 3 + 4}s`,
+            animationDelay: `${Math.random() * 5}s`,
+            // Qar dənəciklərinin ölçüsünü bura tənzimlədim (6px - 10px arası)
+            width: `${Math.random() * 4 + 6}px`, 
+            height: `${Math.random() * 4 + 6}px`,
+            opacity: Math.random() * 0.4 + 0.4
           }} />
         ))}
       </SnowContainer>
@@ -77,10 +79,12 @@ const SnowContainer = styled.div`
 
 const SnowFlake = styled.div`
   position: absolute;
-  top: -10px;
+  top: -20px;
   background: white;
   border-radius: 50%;
-  filter: blur(0.5px);
+  // Daha yaxşı görünməsi üçün ağ parıltı əlavə etdim
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  filter: blur(1px);
   animation: fall linear infinite;
 
   @keyframes fall {
@@ -88,8 +92,8 @@ const SnowFlake = styled.div`
       transform: translateY(-10vh) translateX(0);
     }
     100% {
-      /* var(--xOffset) vasitəsilə siçanın istiqamətinə meyl edir */
-      transform: translateY(110vh) translateX(var(--xOffset));
+      /* var(--moveX) kursorun istiqamətinə görə qarı sürüşdürür */
+      transform: translateY(110vh) translateX(var(--moveX));
     }
   }
 `;
@@ -106,20 +110,21 @@ const Overlay = styled.div`
   justify-content: center;
   z-index: 100;
   cursor: pointer;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
 `;
 
 const EnterText = styled.h1`
   color: white;
   font-family: sans-serif;
   font-size: 14px;
-  letter-spacing: 5px;
+  letter-spacing: 8px;
+  font-weight: 300;
   animation: blink 2s infinite;
-  @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+  @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
 `;
 
 const ContentWrapper = styled.div`
   position: relative;
   z-index: 2;
-  transition: opacity 1s ease;
+  transition: opacity 1.5s ease;
 `;
