@@ -8,12 +8,13 @@ import { darkTheme, lightTheme } from "../styles/theme.config";
 import { GoogleAnalytics } from "nextjs-google-analytics";
 import { DefaultSeo } from 'next-seo';
 import SEO from '../next-seo.config';
+// 1. BURANI ƏLAVƏ ET:
+import { Analytics } from '@vercel/analytics/react';
 
 function MyApp({ Component, pageProps }) {
     const darkMode = useDarkMode(false, { storageKey: null, onChange: null })
     const [isMounted, setIsMounted] = useState(false)
 
-    // const [theme, setTheme] = useState(lightTheme)
     const theme = darkMode.value ? darkTheme : lightTheme;
 
     useEffect(() => {
@@ -27,7 +28,6 @@ function MyApp({ Component, pageProps }) {
                 <Head>
                     <meta content="width=device-width, initial-scale=1" name="viewport" />
                     <link rel="icon" href="/favicon.ico" />
-
                 </Head>
                 <GlobalStyle />
                 <Layout>
@@ -56,10 +56,11 @@ function MyApp({ Component, pageProps }) {
                         }]}
                     />
                     {isMounted && <Component {...pageProps} />}
+                    {/* 2. BURANI DA ƏLAVƏ ET: */}
+                    <Analytics />
                 </Layout>
             </ThemeProvider>
         </>
-
     )
 }
 export default MyApp
