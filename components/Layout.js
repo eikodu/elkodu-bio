@@ -1,21 +1,9 @@
 import styled from 'styled-components'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 
 export default function Layout({ children }) {
   const [started, setStarted] = useState(false);
-  const [offset, setOffset] = useState(0);
   const audioRef = useRef(null);
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      // Siçanın mərkəzdən nə qədər uzaq olduğunu hesablayırıq
-      // Rəqəmi (150) artırsan, qar daha çox sağa-sola meyl edər
-      const xMove = (e.clientX / window.innerWidth - 0.5) * 150;
-      setOffset(xMove);
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   const startSite = () => {
     audioRef.current.play().catch(() => {});
@@ -30,21 +18,21 @@ export default function Layout({ children }) {
         </Overlay>
       )}
 
+      {/* Video Fonu */}
       <video autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, filter: 'brightness(0.3)' }}>
         <source src="/background.mp4" type="video/mp4" />
       </video>
 
-      {/* Qar təbəqəsi */}
-      <SnowContainer style={{ '--moveX': `${offset}px` }}>
-        {[...Array(40)].map((_, i) => (
+      {/* Sadə Qar Təbəqəsi - Kursor hərəkətindən asılı deyil */}
+      <SnowContainer>
+        {[...Array(45)].map((_, i) => (
           <SnowFlake key={i} style={{ 
             left: `${Math.random() * 100}%`, 
-            animationDuration: `${Math.random() * 3 + 4}s`,
-            animationDelay: `${Math.random() * 5}s`,
-            // Qar dənəciklərinin ölçüsünü bura tənzimlədim (6px - 10px arası)
-            width: `${Math.random() * 4 + 6}px`, 
-            height: `${Math.random() * 4 + 6}px`,
-            opacity: Math.random() * 0.4 + 0.4
+            animationDuration: `${Math.random() * 5 + 7}s`, // Daha yavaş və dinc yağma
+            animationDelay: `${Math.random() * 10}s`,
+            width: `${Math.random() * 4 + 5}px`, 
+            height: `${Math.random() * 4 + 5}px`,
+            opacity: Math.random() * 0.4 + 0.3
           }} />
         ))}
       </SnowContainer>
@@ -54,6 +42,15 @@ export default function Layout({ children }) {
       </audio>
 
       <ContentWrapper style={{ opacity: started ? 1 : 0 }}>
+        {/* Sosial Media Banneri */}
+        <SocialBanner>
+          <a href="https://discord.com" target="_blank" rel="noreferrer">Discord</a>
+          <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://tiktok.com" target="_blank" rel="noreferrer">TikTok</a>
+          <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://spotify.com" target="_blank" rel="noreferrer">Spotify</a>
+        </SocialBanner>
+
         {children}
       </ContentWrapper>
     </Main>
@@ -67,14 +64,35 @@ const Main = styled.main`
   overflow: hidden;
 `;
 
+const SocialBanner = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 12px 25px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border-radius: 50px; /* Daha oval görünüş üçün */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: 0.3s ease;
+    &:hover {
+      color: #fff;
+      transform: translateY(-2px);
+    }
+  }
+`;
+
 const SnowContainer = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
+  top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;
 `;
 
 const SnowFlake = styled.div`
@@ -82,44 +100,23 @@ const SnowFlake = styled.div`
   top: -20px;
   background: white;
   border-radius: 50%;
-  // Daha yaxşı görünməsi üçün ağ parıltı əlavə etdim
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   filter: blur(1px);
   animation: fall linear infinite;
 
   @keyframes fall {
-    0% {
-      transform: translateY(-10vh) translateX(0);
-    }
-    100% {
-      /* var(--moveX) kursorun istiqamətinə görə qarı sürüşdürür */
-      transform: translateY(110vh) translateX(var(--moveX));
-    }
+    0% { transform: translateY(-10vh); }
+    100% { transform: translateY(110vh); }
   }
 `;
 
 const Overlay = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  cursor: pointer;
-  backdrop-filter: blur(15px);
+  top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: flex; align-items: center; justify-content: center; z-index: 100; cursor: pointer; backdrop-filter: blur(15px);
 `;
 
 const EnterText = styled.h1`
-  color: white;
-  font-family: sans-serif;
-  font-size: 14px;
-  letter-spacing: 8px;
-  font-weight: 300;
-  animation: blink 2s infinite;
+  color: white; font-family: sans-serif; font-size: 14px; letter-spacing: 8px; font-weight: 300; animation: blink 2s infinite;
   @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
 `;
 
@@ -127,4 +124,9 @@ const ContentWrapper = styled.div`
   position: relative;
   z-index: 2;
   transition: opacity 1.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 `;
