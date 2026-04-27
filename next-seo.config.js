@@ -2,9 +2,9 @@ export default {
     openGraph: {
         type: 'website',
         locale: 'az_AZ', // Azərbaycan lokalı üçün
-        title: 'Elko | Bio Links', // Paylaşanda görünən əsas başlıq
+        title: 'Elko | lol', // Paylaşanda görünən əsas başlıq
         url: 'https://elkodu.org', // Sənin sayt ünvanın
-        description: 'Elko-nun rəsmi bio linkləri. Bütün sosial media hesablarım bir yerdə.', // Paylaşanda görünən təsvir
+        description: 'Welcome to My Bio-Links.', // Paylaşanda görünən təsvir
         keywords: 'Elko, elkodu, developer, gaming, IT, Azerbaijan', // Axtarış sistemləri üçün açar sözlər
         images: [
             {
