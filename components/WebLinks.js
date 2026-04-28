@@ -19,7 +19,8 @@ const Links = () => {
   const url = bioData[0].url;
   const username = bioData[0].username;
   const titleImg = bioData[0].titleImg;
-  const avatarImg = bioData[0].avatar;
+  // 1. BURADA ŞƏKLİN YOLUNU DƏYİŞDİK:
+  const avatarImg = bioData[0].ogImage; 
   const description = bioData[0].description;
   const descShow = bioData[0].descShow;
   const subdesc = bioData[0].subdesc;
@@ -87,10 +88,6 @@ const Links = () => {
                 {titleImg ?
                     <img src={titleImage} className="handle" /> :
                     <h1>{name}</h1>
-                }
-                {/* if your remove username from data it will not appear */}
-                {
-                  username ? <h3><a href={`${url}`}>{username}</a></h3> : ''
                 }
               </Title>
             </LinkHeader>
@@ -231,13 +228,14 @@ const LinkHeader = styled.div`
     margin-top: 60px;
     margin-bottom: 12px;
     @media screen and (max-width: ${({ theme }) => theme.deviceSize.tablet}) {
-       margin-top: 20px;
+        margin-top: 20px;
     }
 `
 
 const Avatar = styled.div`
-    height: 90px;
-    width: 90px;
+    // 2. BURADA BOYU VƏ ENİ 120PX ETDİK (KÖHNƏSİ 90PX İDİ):
+    height: 120px; 
+    width: 120px;
     position: relative;
     margin-bottom: 12px;
 `
@@ -520,4 +518,3 @@ const NewSection = styled.div`
        transform: scale(1.01);
       }
     }
-`
